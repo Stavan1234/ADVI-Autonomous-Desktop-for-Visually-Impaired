@@ -1,0 +1,1147 @@
+{
+  "administrative tools": {
+    "type": "shortcut",
+    "display_name": "Administrative Tools",
+    "target": "C:\\WINDOWS\\system32\\control.exe"
+  },
+  "antigravity": {
+    "type": "uwp",
+    "display_name": "Antigravity",
+    "target": "electron.app.Antigravity"
+  },
+  "cursor": {
+    "type": "uwp",
+    "display_name": "Cursor",
+    "target": "Anysphere.Cursor"
+  },
+  "discord": {
+    "type": "uwp",
+    "display_name": "Discord",
+    "target": "com.squirrel.Discord.Discord"
+  },
+  "figma": {
+    "type": "uwp",
+    "display_name": "Figma",
+    "target": "com.squirrel.Figma.Figma"
+  },
+  "file explorer": {
+    "type": "uwp",
+    "display_name": "File Explorer",
+    "target": "Microsoft.Windows.Explorer"
+  },
+  "maxxaudio pro by waves \u2013 speaker and microphone audio control and nx 3d sound": {
+    "type": "shortcut",
+    "display_name": "MaxxAudio Pro by Waves \u2013 Speaker and Microphone Audio Control and Nx 3D Sound",
+    "target": "C:\\Windows\\System32\\DriverStore\\FileRepository\\wavesapo8de.inf_amd64_b4d0b189ff2aba03\\WavesSvc64.exe"
+  },
+  "obsidian": {
+    "type": "uwp",
+    "display_name": "Obsidian",
+    "target": "md.obsidian"
+  },
+  "ollama": {
+    "type": "uwp",
+    "display_name": "Ollama",
+    "target": "C:\\Users\\HP\\AppData\\Local\\Programs\\Ollama\\ollama app.exe"
+  },
+  "onedrive": {
+    "type": "uwp",
+    "display_name": "OneDrive",
+    "target": "Microsoft.SkyDrive.Desktop"
+  },
+  "prince": {
+    "type": "uwp",
+    "display_name": "Prince",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\Prince\\prince-gui.exe"
+  },
+  "livecaptions": {
+    "type": "shortcut",
+    "display_name": "LiveCaptions",
+    "target": "C:\\WINDOWS\\system32\\LiveCaptions.exe"
+  },
+  "magnify": {
+    "type": "shortcut",
+    "display_name": "Magnify",
+    "target": "C:\\WINDOWS\\system32\\magnify.exe"
+  },
+  "narrator": {
+    "type": "uwp",
+    "display_name": "Narrator",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\narrator.exe"
+  },
+  "on-screen keyboard": {
+    "type": "uwp",
+    "display_name": "On-Screen Keyboard",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\osk.exe"
+  },
+  "voiceaccess": {
+    "type": "shortcut",
+    "display_name": "VoiceAccess",
+    "target": "C:\\WINDOWS\\system32\\voiceaccess.exe"
+  },
+  "antigravity ide": {
+    "type": "uwp",
+    "display_name": "Antigravity IDE",
+    "target": "Google.AntigravityIDE"
+  },
+  "notebooklm": {
+    "type": "uwp",
+    "display_name": "NotebookLM",
+    "target": "Brave._crx_gjcmcplpgindmmbaenpfgimlec"
+  },
+  "youtube music": {
+    "type": "uwp",
+    "display_name": "YouTube Music",
+    "target": "Brave._crx_cinhimbnkkghhklpknlkffjgod"
+  },
+  "benchmark": {
+    "type": "uwp",
+    "display_name": "Benchmark",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\EqualizerAPO\\Benchmark.exe"
+  },
+  "configuration reference (online)": {
+    "type": "uwp",
+    "display_name": "Configuration reference (online)",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\EqualizerAPO\\Configuration reference (online).url"
+  },
+  "configuration tutorial (online)": {
+    "type": "uwp",
+    "display_name": "Configuration tutorial (online)",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\EqualizerAPO\\Configuration tutorial (online).url"
+  },
+  "equalizer apo configuration editor": {
+    "type": "uwp",
+    "display_name": "Equalizer APO Configuration Editor",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\EqualizerAPO\\Editor.exe"
+  },
+  "equalizer apo device selector": {
+    "type": "uwp",
+    "display_name": "Equalizer APO Device Selector",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\EqualizerAPO\\DeviceSelector.exe"
+  },
+  "uninstall": {
+    "type": "shortcut",
+    "display_name": "Uninstall",
+    "target": "C:\\Program Files\\Tesseract-OCR\\tesseract-uninstall.exe"
+  },
+  "mongodb compass": {
+    "type": "uwp",
+    "display_name": "MongoDB Compass",
+    "target": "com.squirrel.MongoDBCompass.MongoDBCompass"
+  },
+  "postman": {
+    "type": "uwp",
+    "display_name": "Postman",
+    "target": "com.squirrel.Postman.Postman"
+  },
+  "powertoys (preview)": {
+    "type": "uwp",
+    "display_name": "PowerToys (Preview)",
+    "target": "Microsoft.PowerToysWin32"
+  },
+  "proton drive": {
+    "type": "uwp",
+    "display_name": "Proton Drive",
+    "target": "Proton.ProtonDrive"
+  },
+  "proton pass": {
+    "type": "uwp",
+    "display_name": "Proton Pass",
+    "target": "com.squirrel.ProtonPass.ProtonPass"
+  },
+  "send to onenote": {
+    "type": "shortcut",
+    "display_name": "Send to OneNote",
+    "target": "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTEM.EXE"
+  },
+  "command prompt": {
+    "type": "uwp",
+    "display_name": "Command Prompt",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\cmd.exe"
+  },
+  "control panel": {
+    "type": "uwp",
+    "display_name": "Control Panel",
+    "target": "Microsoft.Windows.ControlPanel"
+  },
+  "run": {
+    "type": "uwp",
+    "display_name": "Run",
+    "target": "Microsoft.Windows.Shell.RunDialog"
+  },
+  "telegram": {
+    "type": "uwp",
+    "display_name": "Telegram",
+    "target": "Telegram.TelegramDesktop"
+  },
+  "uninstall telegram": {
+    "type": "shortcut",
+    "display_name": "Uninstall Telegram",
+    "target": "C:\\Users\\HP\\AppData\\Roaming\\Telegram Desktop\\unins000.exe"
+  },
+  "visual studio code": {
+    "type": "uwp",
+    "display_name": "Visual Studio Code",
+    "target": "Microsoft.VisualStudioCode"
+  },
+  "windows powershell (x86)": {
+    "type": "uwp",
+    "display_name": "Windows PowerShell (x86)",
+    "target": "{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}\\WindowsPowerShell\\v1.0\\powershell.exe"
+  },
+  "windows powershell": {
+    "type": "uwp",
+    "display_name": "Windows PowerShell",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe"
+  },
+  "uninstall zoom workplace": {
+    "type": "uwp",
+    "display_name": "Uninstall Zoom Workplace",
+    "target": "Microsoft.AutoGenerated.{FE1F2F1C-8BD1-9BD0-1D16-D0D333CA881B}"
+  },
+  "zoom workplace": {
+    "type": "uwp",
+    "display_name": "Zoom Workplace",
+    "target": "zoom.us.Zoom Video Meetings"
+  },
+  "access": {
+    "type": "uwp",
+    "display_name": "Access",
+    "target": "Microsoft.Office.MSACCESS.EXE.15"
+  },
+  "brave": {
+    "type": "uwp",
+    "display_name": "Brave",
+    "target": "Brave"
+  },
+  "excel": {
+    "type": "uwp",
+    "display_name": "Excel",
+    "target": "Microsoft.Office.EXCEL.EXE.15"
+  },
+  "google chrome": {
+    "type": "uwp",
+    "display_name": "Google Chrome",
+    "target": "Chrome"
+  },
+  "google earth pro": {
+    "type": "uwp",
+    "display_name": "Google Earth Pro",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\Google\\Google Earth Pro\\client\\googleearth.exe"
+  },
+  "microsoft edge": {
+    "type": "uwp",
+    "display_name": "Microsoft Edge",
+    "target": "MSEdge"
+  },
+  "onenote": {
+    "type": "uwp",
+    "display_name": "OneNote",
+    "target": "Microsoft.Office.ONENOTE.EXE.15"
+  },
+  "outlook (classic)": {
+    "type": "uwp",
+    "display_name": "Outlook (classic)",
+    "target": "Microsoft.Office.OUTLOOK.EXE.15"
+  },
+  "powerpoint": {
+    "type": "uwp",
+    "display_name": "PowerPoint",
+    "target": "Microsoft.Office.POWERPNT.EXE.15"
+  },
+  "sticky notes (new)": {
+    "type": "uwp",
+    "display_name": "Sticky Notes (new)",
+    "target": "Microsoft.Office.OneNote.MemoryPreview"
+  },
+  "visual studio installer": {
+    "type": "uwp",
+    "display_name": "Visual Studio Installer",
+    "target": "Microsoft.VisualStudio.Installer"
+  },
+  "word": {
+    "type": "uwp",
+    "display_name": "Word",
+    "target": "Microsoft.Office.WINWORD.EXE.15"
+  },
+  "wsl settings": {
+    "type": "uwp",
+    "display_name": "WSL Settings",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\WSL\\wslsettings\\wslsettings.exe"
+  },
+  "wsl": {
+    "type": "uwp",
+    "display_name": "WSL",
+    "target": "Microsoft.WSL"
+  },
+  "7-zip file manager": {
+    "type": "uwp",
+    "display_name": "7-Zip File Manager",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\7-Zip\\7zFM.exe"
+  },
+  "7-zip help": {
+    "type": "uwp",
+    "display_name": "7-Zip Help",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\7-Zip\\7-zip.chm"
+  },
+  "remote desktop connection": {
+    "type": "uwp",
+    "display_name": "Remote Desktop Connection",
+    "target": "Microsoft.Windows.RemoteDesktop"
+  },
+  "steps recorder": {
+    "type": "uwp",
+    "display_name": "Steps Recorder",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\psr.exe"
+  },
+  "windows fax and scan": {
+    "type": "uwp",
+    "display_name": "Windows Fax and Scan",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WFS.exe"
+  },
+  "windows media player legacy": {
+    "type": "uwp",
+    "display_name": "Windows Media Player Legacy",
+    "target": "Microsoft.Windows.MediaPlayer32"
+  },
+  "character map": {
+    "type": "uwp",
+    "display_name": "Character Map",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\charmap.exe"
+  },
+  "component services": {
+    "type": "uwp",
+    "display_name": "Component Services",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\comexp.msc"
+  },
+  "computer management": {
+    "type": "uwp",
+    "display_name": "Computer Management",
+    "target": "Microsoft.AutoGenerated.{8ABD94FB-E7D6-84A6-A997-C918EDDE0AE5}"
+  },
+  "dfrgui": {
+    "type": "shortcut",
+    "display_name": "dfrgui",
+    "target": "C:\\WINDOWS\\system32\\dfrgui.exe"
+  },
+  "disk cleanup": {
+    "type": "shortcut",
+    "display_name": "Disk Cleanup",
+    "target": "C:\\WINDOWS\\system32\\cleanmgr.exe"
+  },
+  "event viewer": {
+    "type": "uwp",
+    "display_name": "Event Viewer",
+    "target": "Microsoft.AutoGenerated.{BB044BFD-25B7-2FAA-22A8-6371A93E0456}"
+  },
+  "iscsi initiator": {
+    "type": "uwp",
+    "display_name": "iSCSI Initiator",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\iscsicpl.exe"
+  },
+  "memory diagnostics tool": {
+    "type": "shortcut",
+    "display_name": "Memory Diagnostics Tool",
+    "target": "C:\\WINDOWS\\system32\\MdSched.exe"
+  },
+  "odbc data sources (32-bit)": {
+    "type": "uwp",
+    "display_name": "ODBC Data Sources (32-bit)",
+    "target": "{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}\\odbcad32.exe"
+  },
+  "odbc data sources (64-bit)": {
+    "type": "uwp",
+    "display_name": "ODBC Data Sources (64-bit)",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\odbcad32.exe"
+  },
+  "performance monitor": {
+    "type": "uwp",
+    "display_name": "Performance Monitor",
+    "target": "Microsoft.AutoGenerated.{8AA47365-B2B3-1961-69EB-F866E376B12F}"
+  },
+  "print management": {
+    "type": "uwp",
+    "display_name": "Print Management",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\printmanagement.msc"
+  },
+  "recoverydrive": {
+    "type": "shortcut",
+    "display_name": "RecoveryDrive",
+    "target": "C:\\WINDOWS\\system32\\RecoveryDrive.exe"
+  },
+  "registry editor": {
+    "type": "uwp",
+    "display_name": "Registry Editor",
+    "target": "{F38BF404-1D43-42F2-9305-67DE0B28FC23}\\regedit.exe"
+  },
+  "resource monitor": {
+    "type": "uwp",
+    "display_name": "Resource Monitor",
+    "target": "Microsoft.AutoGenerated.{C804BBA7-FA5F-CBF7-8B55-2096E5F972CB}"
+  },
+  "security configuration management": {
+    "type": "shortcut",
+    "display_name": "Security Configuration Management",
+    "target": "C:\\WINDOWS\\system32\\secpol.msc"
+  },
+  "services": {
+    "type": "uwp",
+    "display_name": "Services",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\services.msc"
+  },
+  "system configuration": {
+    "type": "uwp",
+    "display_name": "System Configuration",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\msconfig.exe"
+  },
+  "system information": {
+    "type": "uwp",
+    "display_name": "System Information",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\msinfo32.exe"
+  },
+  "task scheduler": {
+    "type": "uwp",
+    "display_name": "Task Scheduler",
+    "target": "Microsoft.AutoGenerated.{C1C6F8AC-40A3-0F5C-146F-65A9DC70BBB4}"
+  },
+  "windows defender firewall with advanced security": {
+    "type": "uwp",
+    "display_name": "Windows Defender Firewall with Advanced Security",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WF.msc"
+  },
+  "android studio": {
+    "type": "uwp",
+    "display_name": "Android Studio",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\Android\\Android Studio\\bin\\studio64.exe"
+  },
+  "cpu-z": {
+    "type": "uwp",
+    "display_name": "CPU-Z",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\CPUID\\CPU-Z\\cpuz.exe"
+  },
+  "edit cpu-z config file": {
+    "type": "uwp",
+    "display_name": "Edit CPU-Z Config File",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\CPUID\\CPU-Z\\cpuz.ini"
+  },
+  "uninstall cpu-z": {
+    "type": "shortcut",
+    "display_name": "Uninstall CPU-Z",
+    "target": "C:\\Program Files\\CPUID\\CPU-Z\\unins000.exe"
+  },
+  "crystaldiskinfo": {
+    "type": "uwp",
+    "display_name": "CrystalDiskInfo",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\CrystalDiskInfo\\DiskInfo64.exe"
+  },
+  "git bash": {
+    "type": "uwp",
+    "display_name": "Git Bash",
+    "target": "Microsoft.AutoGenerated.{0FDD9C6B-656B-0F1F-AB08-B1CDBB7067B3}"
+  },
+  "git cmd": {
+    "type": "uwp",
+    "display_name": "Git CMD",
+    "target": "Microsoft.AutoGenerated.{29591C0F-7C09-B655-C0EB-8544FCA7D1DE}"
+  },
+  "git gui": {
+    "type": "uwp",
+    "display_name": "Git GUI",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\Git\\cmd\\git-gui.exe"
+  },
+  "git release notes": {
+    "type": "uwp",
+    "display_name": "Git Release Notes",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\Git\\ReleaseNotes.html"
+  },
+  "hp laserjet guide": {
+    "type": "uwp",
+    "display_name": "HP LaserJet Guide",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\HP\\HP LaserJet P1100 Series\\C_help\\Help.exe"
+  },
+  "intellij idea community edition 2025.1.3": {
+    "type": "uwp",
+    "display_name": "IntelliJ IDEA Community Edition 2025.1.3",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\JetBrains\\IntelliJ IDEA Community Edition 2025.1.3\\bin\\idea64.exe"
+  },
+  "office language preferences": {
+    "type": "uwp",
+    "display_name": "Office Language Preferences",
+    "target": "Microsoft.Office.SETLANG.EXE.15"
+  },
+  "spreadsheet compare": {
+    "type": "uwp",
+    "display_name": "Spreadsheet Compare",
+    "target": "Microsoft.Office.SPREADSHEETCOMPARE.EXE.15"
+  },
+  "telemetry log for office": {
+    "type": "uwp",
+    "display_name": "Telemetry Log for Office",
+    "target": "Microsoft.Office.msoev.exe.15"
+  },
+  "install additional tools for node.js": {
+    "type": "uwp",
+    "display_name": "Install Additional Tools for Node.js",
+    "target": "Microsoft.AutoGenerated.{04770C2D-34E6-BE94-EFAD-FA817237D6E9}"
+  },
+  "node.js command prompt": {
+    "type": "uwp",
+    "display_name": "Node.js command prompt",
+    "target": "Microsoft.AutoGenerated.{499EE7CA-7ED5-EBC9-AB09-80DC143D7B90}"
+  },
+  "node.js": {
+    "type": "uwp",
+    "display_name": "Node.js",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\nodejs\\node.exe"
+  },
+  "uninstall node.js": {
+    "type": "uwp",
+    "display_name": "Uninstall Node.js",
+    "target": "Microsoft.AutoGenerated.{9D1B4D03-C1FF-3626-8A95-FBF0C8B5D087}"
+  },
+  "postgis 3 pdf documentation": {
+    "type": "uwp",
+    "display_name": "PostGIS 3 PDF Documentation",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\PostgreSQL\\18\\doc\\contrib\\postgis-3.pdf"
+  },
+  "postgis postgis bundle 3 for postgresql x64 18 shapefile and dbf loader exporter": {
+    "type": "uwp",
+    "display_name": "PostGIS PostGIS Bundle 3 for PostgreSQL x64 18 Shapefile and DBF Loader Exporter",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\PostgreSQL\\18\\bin\\postgisgui\\shp2pgsql-gui.exe"
+  },
+  "application stack builder": {
+    "type": "uwp",
+    "display_name": "Application Stack Builder",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\PostgreSQL\\18\\bin\\stackbuilder.exe"
+  },
+  "pgadmin 4": {
+    "type": "uwp",
+    "display_name": "pgAdmin 4",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\PostgreSQL\\18\\pgAdmin 4\\runtime\\pgAdmin4.exe"
+  },
+  "reload configuration": {
+    "type": "uwp",
+    "display_name": "Reload Configuration",
+    "target": "Microsoft.AutoGenerated.{2DA42D11-E754-D582-08F8-9FA969AAEBA5}"
+  },
+  "sql shell (psql)": {
+    "type": "uwp",
+    "display_name": "SQL Shell (psql)",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\PostgreSQL\\18\\scripts\\runpsql.bat"
+  },
+  "proton vpn": {
+    "type": "uwp",
+    "display_name": "Proton VPN",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\Proton\\VPN\\ProtonVPN.Launcher.exe"
+  },
+  "idle (python 3.13 64-bit)": {
+    "type": "uwp",
+    "display_name": "IDLE (Python 3.13 64-bit)",
+    "target": "Microsoft.AutoGenerated.{62BE62DE-0F2E-CFC5-2C12-52AB45E12BF1}"
+  },
+  "python 3.13 (64-bit)": {
+    "type": "uwp",
+    "display_name": "Python 3.13 (64-bit)",
+    "target": "C:\\Python313\\python.exe"
+  },
+  "python 3.13 manuals (64-bit)": {
+    "type": "uwp",
+    "display_name": "Python 3.13 Manuals (64-bit)",
+    "target": "C:\\Python313\\Doc\\html\\index.html"
+  },
+  "python 3.13 module docs (64-bit)": {
+    "type": "uwp",
+    "display_name": "Python 3.13 Module Docs (64-bit)",
+    "target": "Microsoft.AutoGenerated.{295F2481-2276-6B09-3695-02EC7A4DE3A6}"
+  },
+  "sonma typing-expert": {
+    "type": "uwp",
+    "display_name": "Sonma Typing-Expert",
+    "target": "{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\\Sonma Typing-Expert\\Sonma Typing-Expert.exe"
+  },
+  "user-guide": {
+    "type": "uwp",
+    "display_name": "User-Guide",
+    "target": "{F38BF404-1D43-42F2-9305-67DE0B28FC23}\\Sonma Typing-Expert\\STEFeature.pdf"
+  },
+  "www.sonma.mobie.in": {
+    "type": "uwp",
+    "display_name": "www.sonma.mobie.in",
+    "target": "{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\\Sonma Typing-Expert\\sonma.url"
+  },
+  "task manager": {
+    "type": "uwp",
+    "display_name": "Task Manager",
+    "target": "Microsoft.AutoGenerated.{923DD477-5846-686B-A659-0FCCD73851A8}"
+  },
+  "console": {
+    "type": "uwp",
+    "display_name": "Console",
+    "target": "Microsoft.AutoGenerated.{49F182AE-BFD7-691D-F186-03BEE41E8345}"
+  },
+  "dokumentation": {
+    "type": "uwp",
+    "display_name": "Dokumentation",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\Tesseract-OCR\\tesseract.1.html"
+  },
+  "faq": {
+    "type": "uwp",
+    "display_name": "FAQ",
+    "target": "https://github.com/tesseract-ocr/tesseract/wiki/FAQ"
+  },
+  "homepage": {
+    "type": "uwp",
+    "display_name": "Homepage",
+    "target": "https://github.com/tesseract-ocr/tesseract"
+  },
+  "readme": {
+    "type": "uwp",
+    "display_name": "ReadMe",
+    "target": "https://github.com/tesseract-ocr/tesseract/wiki/ReadMe"
+  },
+  "documentation": {
+    "type": "uwp",
+    "display_name": "Documentation",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\VideoLAN\\VLC\\Documentation.url"
+  },
+  "release notes": {
+    "type": "uwp",
+    "display_name": "Release Notes",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\VideoLAN\\VLC\\NEWS.txt"
+  },
+  "videolan website": {
+    "type": "uwp",
+    "display_name": "VideoLAN Website",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\VideoLAN\\VLC\\VideoLAN Website.url"
+  },
+  "vlc media player - reset preferences and cache files": {
+    "type": "uwp",
+    "display_name": "VLC media player - reset preferences and cache files",
+    "target": "Microsoft.AutoGenerated.{51325390-AE6A-68FC-A315-0950CC83A166}"
+  },
+  "vlc media player skinned": {
+    "type": "uwp",
+    "display_name": "VLC media player skinned",
+    "target": "Microsoft.AutoGenerated.{30BD9A02-CB9A-93FD-A859-09C8803F2346}"
+  },
+  "vlc media player": {
+    "type": "uwp",
+    "display_name": "VLC media player",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\VideoLAN\\VLC\\vlc.exe"
+  },
+  "developer command prompt for vs 2019": {
+    "type": "uwp",
+    "display_name": "Developer Command Prompt for VS 2019",
+    "target": "Microsoft.AutoGenerated.{DC571BEA-D7E6-C3E3-185D-11AC9AF17B4D}"
+  },
+  "developer powershell for vs 2019": {
+    "type": "uwp",
+    "display_name": "Developer PowerShell for VS 2019",
+    "target": "Microsoft.AutoGenerated.{BBAE4366-958B-4337-82F6-D6AD532F6EB5}"
+  },
+  "x64 native tools command prompt for vs 2019": {
+    "type": "uwp",
+    "display_name": "x64 Native Tools Command Prompt for VS 2019",
+    "target": "Microsoft.AutoGenerated.{FF70D809-A022-5972-850F-19E0AA8C07C2}"
+  },
+  "x64_x86 cross tools command prompt for vs 2019": {
+    "type": "uwp",
+    "display_name": "x64_x86 Cross Tools Command Prompt for VS 2019",
+    "target": "Microsoft.AutoGenerated.{F19FC46A-6F24-4DEB-153B-68D242AA0EEF}"
+  },
+  "x86 native tools command prompt for vs 2019": {
+    "type": "uwp",
+    "display_name": "x86 Native Tools Command Prompt for VS 2019",
+    "target": "Microsoft.AutoGenerated.{C22C6157-8D44-071B-A914-083F92AA20D0}"
+  },
+  "x86_x64 cross tools command prompt for vs 2019": {
+    "type": "uwp",
+    "display_name": "x86_x64 Cross Tools Command Prompt for VS 2019",
+    "target": "Microsoft.AutoGenerated.{1248DF79-8DF1-B616-B28A-9D102F13D20B}"
+  },
+  "windows powershell ise (x86)": {
+    "type": "shortcut",
+    "display_name": "Windows PowerShell ISE (x86)",
+    "target": "C:\\WINDOWS\\syswow64\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+  },
+  "windows powershell ise": {
+    "type": "shortcut",
+    "display_name": "Windows PowerShell ISE",
+    "target": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+  },
+  "winzip 15.5": {
+    "type": "shortcut",
+    "display_name": "WinZip 15.5",
+    "target": "C:\\Program Files (x86)\\WinZip\\WINZIP32.EXE"
+  },
+  "uninstall wiztree": {
+    "type": "shortcut",
+    "display_name": "Uninstall WizTree",
+    "target": "C:\\Program Files\\WizTree\\unins000.exe"
+  },
+  "wiztree": {
+    "type": "uwp",
+    "display_name": "WizTree",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\WizTree\\WizTree64.exe"
+  },
+  "uninstall xampp": {
+    "type": "shortcut",
+    "display_name": "Uninstall XAMPP",
+    "target": "C:\\xampp\\uninstall.exe"
+  },
+  "xampp control panel": {
+    "type": "uwp",
+    "display_name": "XAMPP Control Panel",
+    "target": "C:\\xampp\\xampp-control.exe"
+  },
+  "xampp htdocs folder": {
+    "type": "uwp",
+    "display_name": "XAMPP htdocs folder",
+    "target": "C:\\xampp\\htdocs"
+  },
+  "zap 2.17.0": {
+    "type": "uwp",
+    "display_name": "ZAP 2.17.0",
+    "target": "{6D809377-6AF0-444B-8957-A3773F02200E}\\ZAP\\Zed Attack Proxy\\ZAP.exe"
+  },
+  "zed attack proxy by checkmarx uninstaller": {
+    "type": "shortcut",
+    "display_name": "Zed Attack Proxy by Checkmarx Uninstaller",
+    "target": "C:\\Program Files\\ZAP\\Zed Attack Proxy\\uninstall.exe"
+  },
+  "3d viewer": {
+    "type": "uwp",
+    "display_name": "3D Viewer",
+    "target": "Microsoft.Microsoft3DViewer_8wekyb3d8bbwe!Microsoft.Microsoft3DViewer"
+  },
+  "bitnami for xampp": {
+    "type": "uwp",
+    "display_name": "Bitnami for XAMPP",
+    "target": "https://bitnami.com/stack/xampp?utm_source=bitnami&utm_medium=installer&utm_campaign=XAMPP%2BInstaller"
+  },
+  "calculator": {
+    "type": "uwp",
+    "display_name": "Calculator",
+    "target": "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App"
+  },
+  "calendar": {
+    "type": "uwp",
+    "display_name": "Calendar",
+    "target": "microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.calendar"
+  },
+  "camera": {
+    "type": "uwp",
+    "display_name": "Camera",
+    "target": "Microsoft.WindowsCamera_8wekyb3d8bbwe!App"
+  },
+  "chatgpt classic": {
+    "type": "uwp",
+    "display_name": "ChatGPT Classic",
+    "target": "OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0!ChatGPT"
+  },
+  "click to do": {
+    "type": "uwp",
+    "display_name": "Click to Do",
+    "target": "MicrosoftWindows.Client.CoreAI_cw5n1h2txyewy!ClickToDoApp"
+  },
+  "clock": {
+    "type": "uwp",
+    "display_name": "Clock",
+    "target": "Microsoft.WindowsAlarms_8wekyb3d8bbwe!App"
+  },
+  "command palette": {
+    "type": "uwp",
+    "display_name": "Command Palette",
+    "target": "Microsoft.CommandPalette_8wekyb3d8bbwe!App"
+  },
+  "copilot": {
+    "type": "uwp",
+    "display_name": "Copilot",
+    "target": "Microsoft.Copilot_8wekyb3d8bbwe!App"
+  },
+  "d-day countdown lite": {
+    "type": "uwp",
+    "display_name": "D-Day Countdown Lite",
+    "target": "9612Monobutton.D-DayCountdownSingle_teh93da52fdny!App"
+  },
+  "defragment and optimise drives": {
+    "type": "uwp",
+    "display_name": "Defragment and Optimise Drives",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\dfrgui.exe"
+  },
+  "dell free fall data protection": {
+    "type": "uwp",
+    "display_name": "Dell Free Fall Data Protection",
+    "target": "STMicroelectronicsMEMS.DellFreeFallDataProtection_rp6h1c31mfy1y!App"
+  },
+  "dell supportassist": {
+    "type": "uwp",
+    "display_name": "Dell SupportAssist",
+    "target": "DellInc.DellSupportAssistforPCs_htrsf667h5kn2!App"
+  },
+  "disk clean-up": {
+    "type": "uwp",
+    "display_name": "Disk Clean-up",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\cleanmgr.exe"
+  },
+  "feedback hub": {
+    "type": "uwp",
+    "display_name": "Feedback Hub",
+    "target": "Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe!App"
+  },
+  "films & tv": {
+    "type": "uwp",
+    "display_name": "Films & TV",
+    "target": "Microsoft.ZuneVideo_8wekyb3d8bbwe!Microsoft.ZuneVideo"
+  },
+  "game bar": {
+    "type": "uwp",
+    "display_name": "Game Bar",
+    "target": "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App"
+  },
+  "get help": {
+    "type": "uwp",
+    "display_name": "Get Help",
+    "target": "Microsoft.GetHelp_8wekyb3d8bbwe!App"
+  },
+  "get started": {
+    "type": "uwp",
+    "display_name": "Get Started",
+    "target": "MicrosoftWindows.Client.CBS_cw5n1h2txyewy!WebExperienceHost"
+  },
+  "git faqs (frequently asked questions)": {
+    "type": "uwp",
+    "display_name": "Git FAQs (Frequently Asked Questions)",
+    "target": "https://gitforwindows.org/faq"
+  },
+  "h3-pg website": {
+    "type": "uwp",
+    "display_name": "h3-pg Website",
+    "target": "https://pgxn.org/dist/h3/docs/api.html"
+  },
+  "hill climb racing": {
+    "type": "uwp",
+    "display_name": "Hill Climb Racing",
+    "target": "FINGERSOFT.HILLCLIMBRACING_r6rtpscs7gwyg!App"
+  },
+  "installation notes": {
+    "type": "uwp",
+    "display_name": "Installation notes",
+    "target": "file://C:\\Program Files\\PostgreSQL\\18/doc/installation-notes.html"
+  },
+  "intel(r) management and security status": {
+    "type": "uwp",
+    "display_name": "Intel(R) Management and Security Status",
+    "target": "AppUp.IntelManagementandSecurityStatus_8j3eq9eme6ctt!App"
+  },
+  "intel\u00a9 graphics command center": {
+    "type": "uwp",
+    "display_name": "Intel\u00a9 Graphics Command Center",
+    "target": "AppUp.IntelGraphicsExperience_8j3eq9eme6ctt!App"
+  },
+  "live captions": {
+    "type": "uwp",
+    "display_name": "Live captions",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\LiveCaptions.exe"
+  },
+  "local security policy": {
+    "type": "uwp",
+    "display_name": "Local Security Policy",
+    "target": "Microsoft.AutoGenerated.{BD3F924E-55FB-A1BA-9DE6-B50F9F2460AC}"
+  },
+  "magnifier": {
+    "type": "uwp",
+    "display_name": "Magnifier",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\magnify.exe"
+  },
+  "mail": {
+    "type": "uwp",
+    "display_name": "Mail",
+    "target": "microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.mail"
+  },
+  "maps": {
+    "type": "uwp",
+    "display_name": "Maps",
+    "target": "Microsoft.WindowsMaps_8wekyb3d8bbwe!App"
+  },
+  "maxxaudio pro by waves - speaker and microphone audio control and nx 3d sound": {
+    "type": "uwp",
+    "display_name": "MaxxAudio Pro by Waves - Speaker and Microphone Audio Control and Nx 3D Sound",
+    "target": "WavesAudio.Dell.MaxxAudioPro"
+  },
+  "maxxaudiopro": {
+    "type": "uwp",
+    "display_name": "MaxxAudioPro",
+    "target": "WavesAudio.MaxxAudioProforDell2019_fh4rh281wavaa!App"
+  },
+  "media player": {
+    "type": "uwp",
+    "display_name": "Media Player",
+    "target": "Microsoft.ZuneMusic_8wekyb3d8bbwe!Microsoft.ZuneMusic"
+  },
+  "microsoft 365 copilot": {
+    "type": "uwp",
+    "display_name": "Microsoft 365 Copilot",
+    "target": "Microsoft.MicrosoftOfficeHub_8wekyb3d8bbwe!Microsoft.MicrosoftOfficeHub"
+  },
+  "microsoft clipchamp": {
+    "type": "uwp",
+    "display_name": "Microsoft Clipchamp",
+    "target": "Clipchamp.Clipchamp_yxz26nhyzhsrt!App"
+  },
+  "microsoft store": {
+    "type": "uwp",
+    "display_name": "Microsoft Store",
+    "target": "Microsoft.WindowsStore_8wekyb3d8bbwe!App"
+  },
+  "microsoft teams": {
+    "type": "uwp",
+    "display_name": "Microsoft Teams",
+    "target": "MSTeams_8wekyb3d8bbwe!MSTeams"
+  },
+  "microsoft to do": {
+    "type": "uwp",
+    "display_name": "Microsoft To Do",
+    "target": "Microsoft.Todos_8wekyb3d8bbwe!App"
+  },
+  "mixed reality portal": {
+    "type": "uwp",
+    "display_name": "Mixed Reality Portal",
+    "target": "Microsoft.MixedReality.Portal_8wekyb3d8bbwe!App"
+  },
+  "mobilitydb website": {
+    "type": "uwp",
+    "display_name": "MobilityDB Website",
+    "target": "https://mobilitydb.com/"
+  },
+  "news": {
+    "type": "uwp",
+    "display_name": "News",
+    "target": "Microsoft.BingNews_8wekyb3d8bbwe!AppexNews"
+  },
+  "node.js documentation": {
+    "type": "uwp",
+    "display_name": "Node.js documentation",
+    "target": "https://nodejs.org/download/release/v22.17.1/docs/api/"
+  },
+  "node.js website": {
+    "type": "uwp",
+    "display_name": "Node.js website",
+    "target": "https://nodejs.org/"
+  },
+  "notepad": {
+    "type": "uwp",
+    "display_name": "Notepad",
+    "target": "Microsoft.WindowsNotepad_8wekyb3d8bbwe!App"
+  },
+  "ogr_fdw website": {
+    "type": "uwp",
+    "display_name": "ogr_fdw Website",
+    "target": "https://github.com/pramsey/pgsql-ogr-fdw"
+  },
+  "onenote for windows 10": {
+    "type": "uwp",
+    "display_name": "OneNote for Windows 10",
+    "target": "Microsoft.Office.OneNote_8wekyb3d8bbwe!microsoft.onenoteim"
+  },
+  "outlook": {
+    "type": "uwp",
+    "display_name": "Outlook",
+    "target": "Microsoft.OutlookForWindows_8wekyb3d8bbwe!Microsoft.OutlookforWindows"
+  },
+  "paint": {
+    "type": "uwp",
+    "display_name": "Paint",
+    "target": "Microsoft.Paint_8wekyb3d8bbwe!App"
+  },
+  "paint 3d": {
+    "type": "uwp",
+    "display_name": "Paint 3D",
+    "target": "Microsoft.MSPaint_8wekyb3d8bbwe!Microsoft.MSPaint"
+  },
+  "pgadmin documentation": {
+    "type": "uwp",
+    "display_name": "pgAdmin documentation",
+    "target": "file://C:\\Program Files\\PostgreSQL\\18/pgAdmin 4/docs/en_US/html/index.html"
+  },
+  "pgpointcloud website": {
+    "type": "uwp",
+    "display_name": "pgPointcloud Website",
+    "target": "https://pgpointcloud.github.io/pointcloud/"
+  },
+  "pgrouting 4.0 manual on-line": {
+    "type": "uwp",
+    "display_name": "pgRouting 4.0 Manual On-Line",
+    "target": "https://docs.pgrouting.org/4.0/en/index.html"
+  },
+  "pgrouting website": {
+    "type": "uwp",
+    "display_name": "pgRouting Website",
+    "target": "https://pgrouting.org/"
+  },
+  "pgsphere website": {
+    "type": "uwp",
+    "display_name": "pgSphere Website",
+    "target": "https://pgsphere.org/"
+  },
+  "phone link": {
+    "type": "uwp",
+    "display_name": "Phone Link",
+    "target": "Microsoft.YourPhone_8wekyb3d8bbwe!App"
+  },
+  "photos": {
+    "type": "uwp",
+    "display_name": "Photos",
+    "target": "Microsoft.Windows.Photos_8wekyb3d8bbwe!App"
+  },
+  "postgis documentation on-line": {
+    "type": "uwp",
+    "display_name": "PostGIS Documentation On-Line",
+    "target": "https://postgis.net/documentation/"
+  },
+  "postgis manual on-line": {
+    "type": "uwp",
+    "display_name": "PostGIS Manual On-Line",
+    "target": "https://postgis.net/docs/"
+  },
+  "postgis website": {
+    "type": "uwp",
+    "display_name": "PostGIS Website",
+    "target": "https://postgis.net/"
+  },
+  "postgresql documentation": {
+    "type": "uwp",
+    "display_name": "PostgreSQL documentation",
+    "target": "file://C:\\Program Files\\PostgreSQL\\18/doc/src/sgml/html/index.html"
+  },
+  "postgresql release notes": {
+    "type": "uwp",
+    "display_name": "PostgreSQL release notes",
+    "target": "file://C:\\Program Files\\PostgreSQL\\18/doc/src/sgml/html/release.html"
+  },
+  "power automate": {
+    "type": "uwp",
+    "display_name": "Power Automate",
+    "target": "Microsoft.PowerAutomateDesktop_8wekyb3d8bbwe!PAD.Console"
+  },
+  "quick assist": {
+    "type": "uwp",
+    "display_name": "Quick Assist",
+    "target": "MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe!App"
+  },
+  "recovery drive": {
+    "type": "uwp",
+    "display_name": "Recovery Drive",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\RecoveryDrive.exe"
+  },
+  "reference documentation": {
+    "type": "uwp",
+    "display_name": "Reference Documentation",
+    "target": "http://docs.oracle.com/javase/24/index.html"
+  },
+  "settings": {
+    "type": "uwp",
+    "display_name": "Settings",
+    "target": "windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel"
+  },
+  "snipping tool": {
+    "type": "uwp",
+    "display_name": "Snipping Tool",
+    "target": "Microsoft.ScreenSketch_8wekyb3d8bbwe!App"
+  },
+  "solitaire & casual games": {
+    "type": "uwp",
+    "display_name": "Solitaire & Casual Games",
+    "target": "Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe!App"
+  },
+  "sound recorder": {
+    "type": "uwp",
+    "display_name": "Sound Recorder",
+    "target": "Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe!App"
+  },
+  "sticky notes": {
+    "type": "uwp",
+    "display_name": "Sticky Notes",
+    "target": "Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe!App"
+  },
+  "synaptics touchpad settings manager - commercial": {
+    "type": "uwp",
+    "display_name": "Synaptics Touchpad Settings Manager - Commercial",
+    "target": "SynapticsIncorporated.SynHPCommercialDApp_807d65c4rvak2!SynHPCommercialDApp"
+  },
+  "telegram desktop": {
+    "type": "uwp",
+    "display_name": "Telegram Desktop",
+    "target": "TelegramMessengerLLP.TelegramDesktop_t4vj0pshhgkwm!Telegram.TelegramDesktop.Store"
+  },
+  "terminal": {
+    "type": "uwp",
+    "display_name": "Terminal",
+    "target": "Microsoft.WindowsTerminal_8wekyb3d8bbwe!App"
+  },
+  "ubuntu": {
+    "type": "uwp",
+    "display_name": "Ubuntu",
+    "target": "Microsoft.AutoGenerated.{7ED0D154-04DB-41CB-42D8-77F55B27D14B}"
+  },
+  "voice access": {
+    "type": "uwp",
+    "display_name": "Voice access",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\voiceaccess.exe"
+  },
+  "weather": {
+    "type": "uwp",
+    "display_name": "Weather",
+    "target": "Microsoft.BingWeather_8wekyb3d8bbwe!App"
+  },
+  "whatsapp": {
+    "type": "uwp",
+    "display_name": "WhatsApp",
+    "target": "5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App"
+  },
+  "windbg": {
+    "type": "uwp",
+    "display_name": "WinDbg",
+    "target": "Microsoft.WinDbg_8wekyb3d8bbwe!Microsoft.WinDbg"
+  },
+  "windows back up": {
+    "type": "uwp",
+    "display_name": "Windows Back up",
+    "target": "MicrosoftWindows.Client.CBS_cw5n1h2txyewy!WindowsBackup"
+  },
+  "windows memory diagnostic": {
+    "type": "uwp",
+    "display_name": "Windows Memory Diagnostic",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\MdSched.exe"
+  },
+  "windows powershell ise 5.1": {
+    "type": "uwp",
+    "display_name": "Windows PowerShell ISE 5.1",
+    "target": "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+  },
+  "windows powershell ise 5.1 (x86)": {
+    "type": "uwp",
+    "display_name": "Windows PowerShell ISE 5.1 (x86)",
+    "target": "{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe"
+  },
+  "windows security": {
+    "type": "uwp",
+    "display_name": "Windows Security",
+    "target": "Microsoft.SecHealthUI_8wekyb3d8bbwe!SecHealthUI"
+  },
+  "windows tools": {
+    "type": "uwp",
+    "display_name": "Windows Tools",
+    "target": "Microsoft.Windows.AdministrativeTools"
+  },
+  "winzip": {
+    "type": "uwp",
+    "display_name": "WinZip",
+    "target": "WinZipComputing.WinZip32"
+  },
+  "zap homepage": {
+    "type": "uwp",
+    "display_name": "ZAP homepage",
+    "target": "https://www.zaproxy.org/"
+  }
+}

@@ -1,0 +1,21 @@
+# 1. Create/update .gitignore
+@"
+.env
+.env.*
+!.env.example
+
+credentials.json
+token.json
+data/token.json
+
+repomix-output.xml
+
+__pycache__/
+*.pyc
+
+# Large model files
+models/*.onnx
+models/*.bin
+models/*.pt
+models/*.pth
+"@ | Set-Content .gitignore

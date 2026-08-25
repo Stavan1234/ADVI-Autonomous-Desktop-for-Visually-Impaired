@@ -34,783 +34,1075 @@
 
 
 
-### Fix Plan (Focus 15):
+# Final ADVI recovery plan
 
-# Final ADVI Architecture Plan
+## Phase 0 — Freeze the foundation
 
-## 0. Freeze the working foundation
-
-Keep these largely unchanged:
+Do **not** rewrite:
 
 ```text
-Gmail API / OAuth
 GmailService
+Gmail OAuth
 LongTermMemory
 MemoryRetriever
-SessionBuffer / ShortTermMemory
-Piper TTS
-LLM provider abstraction
-GeminiProvider
-GroqProvider
+ShortTermMemory / SessionBuffer
+Piper
 Telemetry
-Config / runtime
-low-level Executor tool implementations
+Config / Runtime
+GroqProvider
+GeminiProvider
+Executor's low-level tool methods
 ```
 
-David's old project gives us the useful architectural principle: **Intent → structured Plan → Actions**, with explicit schemas rather than dozens of Python branches. 
+They are not the core architectural problem.
 
----
-
-# 1. New structured Intent
-
-Replace the current enormous intent taxonomy with a compact structured model inspired by David's:
+The current repository is already substantial. The current `Executor` is particularly useful because it has the right result contract:
 
 ```text
-goal
-entities
-constraints
-missing_information
-confirmation_required
+action
+success
+data
+error
 ```
 
-
-
-Gemini's job:
-
-> Understand what the user wants and what information is available/missing.
-
-Example:
-
-```json
-{
-  "goal": "send_email",
-  "entities": {
-    "recipient": "Joel",
-    "body": "I won't be coming tomorrow because of the Eid holiday."
-  },
-  "constraints": [],
-  "missing_information": [],
-  "confirmation_required": true
-}
-```
-
-**No execution logic here.**
+We keep that.
 
 ---
 
-# 2. New Planner
+# Phase 1 — Fix the LLM boundary completely
 
-Replace the current one-step mapping.
+Before rebuilding orchestration, make Gemini reliable enough to be part of an agent loop.
 
-David's planner already demonstrates the correct basic idea: produce a **complete sequence of actions** rather than one action. 
+### 1.1 Gemini must return structured data reliably
 
-Our version goes further by making the plan resumable.
+Current problem:
 
-Example:
+````text
+valid JSON
+→ ```json ... ```
+→ parser failure
+→ UNKNOWN
+````
+
+and sometimes:
+
+```text
+partial JSON
+→ parser failure
+→ UNKNOWN
+```
+
+This already caused:
+
+* task modification → `unknown`
+* email send → `unknown`
+* information request → `unknown`
+
+### Fix
+
+Move structured-output responsibility into the Gemini provider / structured-call layer:
+
+```text
+Gemini
+ ↓
+JSON/schema response
+ ↓
+Pydantic/dataclass validation
+ ↓
+Intent / Plan / Decision
+```
+
+Do not scatter JSON cleanup around `ConversationEngine`.
+
+Add one reusable structured-output mechanism.
+
+### 1.2 Separate normal Gemini chat from structured Gemini calls
+
+The provider currently has only:
+
+```text
+chat(messages)
+```
+
+We should eventually have the conceptual capability for:
+
+```text
+chat(...)
+structured(...)
+```
+
+because these are different jobs.
+
+Gemini should not be forced to produce ordinary conversational text when we need strict JSON.
+
+### 1.3 Measure latency
+
+The current intent calls reached roughly 20–50 seconds in real tests.
+
+After fixing the structured call, measure:
+
+```text
+intent latency
+planner latency
+Groq latency
+total
+input tokens
+output tokens
+```
+
+Do not optimize blindly.
+
+---
+
+# Phase 2 — Simplify Intent, don't destroy it
+
+Your instinct here was correct:
+
+**Intent is important.**
+
+But its job needs to be narrower.
+
+Currently `IntentType` contains a mixture of:
+
+```text
+semantic intent
+task control
+email operations
+conversation
+system actions
+```
+
+That makes the prompt huge.
+
+We should keep the existing model initially, but evolve it toward:
+
+```text
+Intent
+ ├── goal/type
+ ├── target
+ ├── entities
+ ├── parameters
+ ├── confidence
+ └── execution_mode
+```
+
+The exact field `execution_mode` is optional at first, but I recommend planning for it.
+
+Examples:
+
+```text
+conversation
+information
+tool
+interactive_agent
+```
+
+This gives us the future desktop distinction you raised.
+
+### Example
+
+Current Gmail:
+
+```text
+goal = send_email
+execution_mode = tool
+```
+
+Future browser automation:
+
+```text
+goal = send_email
+execution_mode = interactive_agent
+```
+
+The intent tells the system **what kind of workflow this is**.
+
+It does not execute anything.
+
+---
+
+# Phase 3 — Replace the fake Planner with a real Planner
+
+This is the biggest change.
+
+Current:
+
+```text
+Intent
+ ↓
+IntentType → action mapping
+ ↓
+one PlanStep
+```
+
+That is not enough.
+
+The existing `Plan` and `PlanStep` structures are actually fine. We don't need `ActionPlan` as a new duplicate class.
+
+Make the existing `Planner` produce:
+
+```text
+Plan
+ ├── goal
+ ├── confidence
+ ├── steps[]
+ └── status
+```
+
+with multiple steps.
+
+### Example: email
 
 ```text
 Goal: send_email
 
 1. resolve_recipient
 2. compose_email
-3. create_draft
-4. readback
+3. create_email_draft
+4. read_email_draft
 5. await_confirmation
-6. send_draft
+6. send_email
 7. verify_send
 ```
 
-The plan is **not executed all at once**.
+This is where David's old code gives us a useful idea: his planner explicitly produces a sequence of actions rather than leaving workflow construction to Python. That's the part worth borrowing, not the whole old architecture.
 
 ---
 
-# 3. Persistent Task/Plan state
+# Phase 4 — Define the meaning of a PlanStep
 
-Create one authoritative workflow state:
+This is extremely important.
+
+A plan step should specify something like:
 
 ```text
-Task
- ├── task_id
- ├── goal
- ├── plan
- ├── current_step
- ├── status
- └── context
+action
+parameters
+reason
+executor type
 ```
+
+The executor type is future-proofing.
+
+For example:
+
+```text
+resolve_recipient
+    executor = python_tool
+
+compose_email
+    executor = groq_generation
+
+create_email_draft
+    executor = python_tool
+
+await_confirmation
+    executor = user_boundary
+
+send_email
+    executor = python_tool
+
+desktop_click
+    executor = interactive_agent
+```
+
+This is how we support David's future implementation cleanly.
+
+We don't need a completely different architecture for browser automation.
+
+---
+
+# Phase 5 — Change Task from "list of actions" to "plan progress"
+
+We already have `Task`.
+
+Keep it.
+
+Extend it so it owns:
+
+```text
+task_id
+goal
+plan
+current_step
+status
+context
+```
+
+The important part is:
+
+**Plan and Task must no longer duplicate execution state.**
+
+The plan describes the workflow.
+
+The task stores where we currently are in that workflow.
 
 Example:
 
 ```text
-status = awaiting_confirmation
+Task:
+    status = AWAITING_CONFIRMATION
+    current_step = 4
 
-current_step = 5
-
-context:
-    recipient = Joel
-    email = joel@example.com
-    draft_id = abc123
-    subject = ...
-    body = ...
+Plan:
+    0 resolve_recipient      completed
+    1 compose_email          completed
+    2 create_draft            completed
+    3 readback                completed
+    4 await_confirmation      waiting
+    5 send_email              pending
+    6 verify_send             pending
 ```
-
-This becomes the memory of the workflow.
-
-We stop duplicating execution state between `Plan` and `Task`.
 
 ---
 
-# 4. AgentController / AgentLoop
+# Phase 6 — Turn TaskCoordinator into the actual execution loop
 
-This is the central new component.
+This is where the architecture finally becomes agentic.
 
-Its job is simply:
+The current `TaskCoordinator.run()` executes essentially the whole plan loop itself.
 
-```text
-1. Give current state + user input to Gemini.
-2. Gemini chooses the next action/decision.
-3. Execute that action with Python.
-4. Capture ExecutionResult.
-5. Give the result back to Gemini.
-6. Gemini chooses what happens next.
-7. Repeat until waiting/completed/failed.
-```
-
-The core loop is:
+We need to change its responsibility to:
 
 ```text
-Gemini
-   ↓
-Action
-   ↓
-Python Executor
-   ↓
-ExecutionResult
-   ↓
-Gemini
-   ↓
-Next Action
-   ↓
-...
+receive / create plan
+ ↓
+execute ONE current step
+ ↓
+record result
+ ↓
+ask Planner what happens next
 ```
 
-This directly solves the problem we currently have where Gemini classifies something and then Groq independently invents the rest.
+Conceptually:
+
+```python
+while task.status == RUNNING:
+
+    decision = planner.update_plan(
+        intent,
+        task,
+        previous_result,
+    )
+
+    if decision == WAIT_FOR_USER:
+        break
+
+    step = task.plan.steps[task.current_step]
+
+    result = executor.execute(step)
+
+    task.record(result)
+
+    if step requires replan:
+        continue
+```
+
+But **don't implement a Python `while` loop that blindly executes every step without planner involvement**.
+
+The planner gets the execution result after each step.
+
+That is the important part.
 
 ---
 
-# 5. Python becomes the execution authority
+# Phase 7 — Planner feedback loop
 
-Python remains the only component allowed to say:
-
-```text
-Gmail draft created.
-Gmail send succeeded.
-File deleted.
-Memory updated.
-Action failed.
-```
-
-The Executor returns:
-
-```text
-ExecutionResult(
-    action,
-    success,
-    data,
-    error
-)
-```
-
-No LLM can override this.
-
-So:
-
-```text
-Executor says FAILED
-→ system state = FAILED
-→ Groq cannot say "completed"
-```
-
-This fixes the false-email-success bug at the architectural level.
-
----
-
-# 6. Gemini ↔ Python feedback loop
+This is the central loop you wanted.
 
 Example:
 
+### Gemini Planner
+
 ```text
-Gemini:
-create_draft
+Step:
+create_email_draft
 ```
 
 Python:
 
 ```text
-success
-draft_id = 123
-```
-
-Send back to Gemini:
-
-```text
-Previous action:
-create_draft
-
-Result:
 SUCCESS
-
-Data:
-draft_id=123
+draft_id = abc123
 ```
 
-Gemini decides:
+Then send to Gemini:
 
 ```text
-next_action = await_confirmation
+Current goal:
+send email
+
+Completed:
+resolve_recipient
+compose_email
+create_email_draft
+
+Execution result:
+SUCCESS
+draft_id=abc123
+
+Current step:
+create_email_draft
+
+What should happen next?
 ```
 
-Then the task pauses.
-
-Later:
+Gemini returns:
 
 ```text
-User:
-"Make it more polite."
+next step = read_email_draft
 ```
 
-Gemini sees:
+Python executes that.
 
-```text
-current task
-current draft
-current step
-new user request
-```
+Then Gemini gets the result.
 
-and decides:
-
-```text
-modify_email_body
-```
-
-Python updates the existing draft.
-
-Gemini receives the result and decides:
-
-```text
-return to await_confirmation
-```
-
-That's the behavior you were trying to achieve with Focus 14.
+Repeat.
 
 ---
 
-# 7. Confirmation becomes a plan state
+# Phase 8 — Plan modification / replanning
 
-Instead of a giant collection of special confirmation handlers:
+This is the reason we're doing this properly.
 
-```text
-TASK_CONFIRMATION
-TASK_REJECTION
-EMAIL_SEND
-...
-```
-
-the workflow reaches:
+Suppose current plan:
 
 ```text
-await_confirmation
+1 resolve recipient ✓
+2 compose email     ✓
+3 create draft      ✓
+4 confirmation      WAITING
+5 send              pending
 ```
 
-Task state:
+User says:
+
+> Make it more polite and add that I'll be back Monday.
+
+Intent detects:
 
 ```text
-WAITING_FOR_USER
+TASK_MODIFICATION
 ```
 
-Then Gemini interprets the user's next message in context.
-
-Examples:
-
-```text
-"yes"
-→ continue
-
-"send it"
-→ continue
-
-"make it more polite"
-→ modify plan/current draft
-
-"read it again"
-→ readback
-
-"cancel"
-→ cancel
-
-"pause this"
-→ pause
-```
-
-The semantic interpretation remains LLM-driven.
-
-The actual state transition remains deterministic.
-
-That's the balance we wanted.
-
----
-
-# 8. Groq's real role
-
-Groq is **not merely TTS text generation**, but it also does not control execution.
-
-Groq handles:
-
-```text
-natural-language conversation
-email wording
-readbacks
-clarifying questions
-confirmation wording
-friendly explanations
-final responses
-```
-
-For example:
-
-```text
-Gemini:
-await_confirmation
-
-↓
-
-Groq:
-"I've prepared the email to Joel. Here's the draft...
-Would you like me to send it?"
-```
-
-User:
-
-```text
-"Actually, make it more polite."
-```
-
-Groq understands the natural-language interaction and passes the relevant conversational context into the agent flow.
-
-Then Gemini decides how to modify the plan.
-
-So the roles are:
-
-```text
-GEMINI = reasoning / planning / replanning
-
-PYTHON = execution / truth / state
-
-GROQ = language / conversation / presentation
-```
-
----
-
-# 9. Remove the current ConversationEngine special-case maze
-
-Current `ConversationEngine` has accumulated separate handling for:
-
-```text
-pause
-resume
-readback
-modification
-confirmation
-email continuation
-memory
-execution
-final response
-```
-
-We will reduce it to:
-
-```text
-receive user input
-        ↓
-AgentController
-        ↓
-state/result
-        ↓
-Groq
-        ↓
-user response
-```
-
-ConversationEngine becomes an interface layer, not the brain of the agent.
-
----
-
-# 10. Replace the current Planner
-
-Current implementation is effectively:
-
-```text
-IntentType → one action
-```
-
-and only produces one `PlanStep`. 
-
-Replace it with:
-
-```text
-Intent
- ↓
-Gemini Planner
- ↓
-ActionPlan
- ↓
-steps[]
-```
-
-The planner can use the current task state when replanning.
-
----
-
-# 11. Structured Gemini output
-
-We already found two real failures:
-
-````text
-valid JSON wrapped in ```json fences
-````
-
-and:
-
-```text
-truncated JSON
-```
-
-So Gemini outputs must be handled at the provider/schema boundary.
-
-Use:
-
-```text
-structured output
-+
-schema validation
-+
-defensive parsing
-```
-
-instead of letting `json.loads()` silently convert everything into `UNKNOWN`.
-
-David's original implementation already uses Pydantic models for this separation. 
-
----
-
-# 12. Shrink the intent prompt
-
-The current prompt is doing too much.
-
-The new model should not need dozens of categories to distinguish every possible task-control phrase.
-
-It receives:
-
-```text
-current task
-current plan
-current step
-user message
-```
-
-and interprets the message in context.
-
-That should dramatically reduce the prompt size and hopefully the absurd 20–50 second classification latency we've been seeing.
-
-We measure before/after rather than assume.
-
----
-
-# 13. Handle missing information through the same loop
-
-Example:
-
-```text
-User:
-Send an email to David.
-
-Gemini:
-missing_information = recipient_email
-
-Agent:
-WAITING_FOR_USER
-
-Groq:
-"I don't have David's email address. What address should I use?"
-```
-
-User:
-
-```text
-david@example.com
-```
-
-Gemini receives current task + new information and resumes.
-
-No `_resume_email_task()` special case.
-
----
-
-# 14. Email workflow
-
-The final email flow should be:
-
-```text
-User request
-    ↓
-Gemini intent
-    ↓
-Gemini plan
-    ↓
-resolve recipient
-    ↓
-compose email
-    ↓
-create Gmail draft
-    ↓
-readback
-    ↓
-WAITING_FOR_CONFIRMATION
-    ↓
-user modification?
-    ├── yes → modify draft → readback → confirmation
-    └── no
-    ↓
-send Gmail draft
-    ↓
-verify Gmail result
-    ↓
-COMPLETED
-    ↓
-Groq communicates verified outcome
-```
-
-That is the complete Focus 15 workflow.
-
----
-
-# 15. Information requests become proper paths
-
-For:
-
-```text
-"What is 2+2?"
-```
-
-Gemini should identify:
-
-```text
-goal = information_request
-```
-
-Then the system should not create a fake meaningless task and then secretly let Groq answer it.
+But we do **not** hard-code an email-specific modification routine.
 
 Instead:
 
 ```text
-information request
-→ Groq / appropriate reasoning path
-→ answer
+Current Task
++
+Current Plan
++
+Current Draft
++
+User modification
+        ↓
+Gemini Planner
+        ↓
+Updated Plan
 ```
 
-No unnecessary task.
+Maybe:
 
-This fixes the current:
+```text
+1 resolve recipient ✓
+2 compose email     MODIFY
+3 update draft      NEW
+4 readback          NEW
+5 confirmation
+6 send
+7 verify
+```
+
+Already-completed work stays completed.
+
+That's the whole point of persistent planning.
+
+---
+
+# Phase 9 — Confirmation becomes a genuine plan boundary
+
+This is one of the strongest decisions from our discussion.
+
+Confirmation should be a step:
+
+```text
+await_confirmation
+```
+
+not a parallel mini-framework.
+
+When the planner reaches it:
+
+```text
+Task.status = AWAITING_CONFIRMATION
+```
+
+and execution stops.
+
+Then the user can say:
+
+```text
+yes
+send it
+make it more polite
+read it again
+cancel
+pause
+```
+
+Intent interprets what the user means **relative to the current plan**.
+
+Planner decides how the plan changes.
+
+This removes much of the current special-case routing.
+
+---
+
+# Phase 10 — Groq's role
+
+Groq should **not** be the executor.
+
+It should be used for language work.
+
+### Groq can:
+
+* draft email text
+* improve wording
+* read back drafts
+* ask confirmation naturally
+* explain errors
+* produce final conversational answers
+
+### Groq cannot:
+
+* claim Gmail succeeded without execution evidence
+* decide whether a file was actually deleted
+* decide whether an action completed
+* directly mutate task state
+
+The clean rule is:
+
+```text
+Gemini = decide WHAT happens next
+Groq = decide HOW to say it
+Python = determine WHAT actually happened
+```
+
+---
+
+# Phase 11 — Future desktop/browser executor
+
+This is where your LLM ping-pong requirement belongs.
+
+For current Gmail API:
+
+```text
+Gemini
+ ↓
+one tool step
+ ↓
+Python
+ ↓
+result
+ ↓
+Gemini
+ ↓
+next step
+```
+
+For David's future desktop agent:
+
+```text
+Gemini
+ ↓
+click/type/navigate action
+ ↓
+Desktop Agent
+ ↓
+screen observation
+ ↓
+Gemini
+ ↓
+next action
+ ↓
+Desktop Agent
+ ↓
+observation
+ ...
+```
+
+That can be selected by the plan step's executor type.
+
+So **we don't build two architectures**.
+
+We build one planner/executor protocol that supports:
+
+```text
+Python tool executor
+LLM-generation executor
+Interactive desktop executor
+```
+
+---
+
+# Phase 12 — Email becomes our flagship workflow
+
+Before migrating anything else, make Gmail perfect.
+
+Final workflow:
+
+```text
+User
+ ↓
+Intent
+ ↓
+Plan
+ ↓
+Resolve recipient
+ ↓
+Compose content
+ ↓
+Create Gmail draft
+ ↓
+Read draft
+ ↓
+Await confirmation
+ ↓
+[USER CAN MODIFY]
+ ↓
+Update draft
+ ↓
+Read draft again
+ ↓
+Await confirmation
+ ↓
+Send
+ ↓
+Verify send
+ ↓
+Completed
+```
+
+### Cases we must support
+
+**Known recipient**
+
+```text
+Joel → joel@example.com
+```
+
+**Unknown recipient**
+
+```text
+David → ask user for email
+```
+
+**Missing subject**
+
+Either:
+
+* planner/Groq generates one, or
+* ask user, depending on policy.
+
+We should not currently let `Executor` fail simply because the planner forgot to generate a subject. That's a planning failure we should resolve upstream.
+
+**Modification**
+
+```text
+make it more polite
+```
+
+updates the existing draft.
+
+**Cancellation**
+
+```text
+don't send it
+```
+
+ends task.
+
+**Confirmation**
+
+```text
+yes
+```
+
+moves to `send_email`.
+
+**Send failure**
+
+```text
+FAILED
+```
+
+and ADVI explicitly says it failed.
+
+---
+
+# Phase 13 — Execution truth becomes absolute
+
+This is the critical Claude fix.
+
+The system must guarantee:
+
+```text
+ExecutionResult.success = False
+        ↓
+No success claim
+```
+
+Not through a prompt alone.
+
+The application should construct the final conversational context from verified execution state.
+
+Groq gets:
+
+```text
+AUTHORITATIVE RESULT:
+email_send
+success = false
+error = ...
+```
+
+Then it can phrase it naturally.
+
+This is much stronger than saying:
+
+> "Please don't hallucinate."
+
+---
+
+# Phase 14 — Fix information requests
+
+The current system correctly identifies:
 
 ```text
 information_request
-→ Planner BLOCKED
-→ Groq answers anyway
 ```
 
-contradiction. 
+but the planner blocks it.
+
+We need two broad classes of work:
+
+### Tasks
+
+Need Executor/Plan.
+
+```text
+send email
+open browser
+modify file
+```
+
+### Responses
+
+Do not need Executor.
+
+```text
+what is 2+2?
+who are you?
+what do you remember?
+```
+
+The planner should explicitly know whether something is:
+
+```text
+requires_execution = true/false
+```
+
+Again: no giant new class necessary.
 
 ---
 
-# 16. Keep capability safety deterministic
+# Phase 15 — Reduce ConversationEngine dramatically
 
-These remain Python-controlled:
+Once the new loop works, `ConversationEngine` should lose:
+
+* email-specific continuation
+* email confirmation logic
+* email modification logic
+* pause heuristics
+* task routing
+* execution-specific branching
+* post-hoc success prompts
+
+It should mostly:
 
 ```text
-Can this capability execute?
-Is the tool available?
-Is confirmation required?
-Did execution succeed?
-What exact result did the tool return?
+receive user message
+→ invoke agent flow
+→ generate/return response
 ```
 
-LLMs do **not** decide these facts.
+That will probably cut it dramatically below its current ~870 lines.
 
 ---
 
-# 17. SQLite / session cleanup comes later
+# Phase 16 — Remove redundant TaskCoordinator logic
 
-After the orchestration redesign works:
+Current coordinator contains direct:
 
 ```text
-explicit SQLite connection closing
-WAL / timeout where appropriate
-shutdown ordering
-lock regression test
+gmail.send_draft()
+gmail.update_draft()
+gmail.get_draft()
 ```
 
-This stays separate from the agent redesign.
+Those should disappear from the coordinator.
+
+Coordinator should say:
+
+```text
+Executor.execute(step)
+```
+
+That's it.
+
+The coordinator manages workflow, not Gmail.
 
 ---
 
-# 18. Testing strategy
+# Phase 17 — Fix TaskManager cleanup
 
-We don't try to preserve every current test blindly.
+The current code already has a real problem:
 
-We keep the useful unit tests, then add **workflow tests**.
+`TaskStatus` is declared twice.
 
-Minimum end-to-end matrix:
+That must be cleaned up.
+
+Also:
 
 ```text
-Conversation
-Information request
-Memory retrieval
-Memory update
-Email draft
-Missing recipient
-Email modification
-Email confirmation
-Email cancellation
-Email send failure
-Email send success
-Pause
-Resume
-Task interruption
-Task modification
-Task completion
+TaskManager
+TaskCoordinator
 ```
 
-Most importantly:
+should have a single ownership rule:
+
+### TaskManager
+
+State mutations.
+
+### TaskCoordinator / Agent loop
+
+Workflow decisions.
+
+### Executor
+
+Actions.
+
+### Planner
+
+Planning.
+
+No overlap.
+
+---
+
+# Phase 18 — Structured Gemini planning
+
+Once the plan model is stable, Gemini should produce schema-validated plans.
+
+For example:
+
+```json
+{
+  "goal": "send_email",
+  "steps": [
+    {
+      "action": "resolve_recipient",
+      "parameters": {
+        "name": "Joel"
+      }
+    },
+    {
+      "action": "compose_email",
+      "parameters": {}
+    },
+    {
+      "action": "create_email_draft",
+      "parameters": {}
+    },
+    {
+      "action": "await_confirmation",
+      "parameters": {}
+    },
+    {
+      "action": "send_email",
+      "parameters": {}
+    }
+  ]
+}
+```
+
+The actual schema should be simple.
+
+Don't add enormous numbers of fields.
+
+---
+
+# Phase 19 — Testing strategy changes
+
+The current ~149 tests are valuable, but we need **workflow tests**, not only component tests.
+
+We'll keep existing unit tests where they still represent valid behavior.
+
+Add:
 
 ```text
-executor fails
-→ final response MUST NOT claim success
+1. simple conversation
+2. information request
+3. memory retrieval
+4. email draft
+5. missing recipient
+6. missing subject
+7. draft readback
+8. modification
+9. reconfirmation
+10. cancellation
+11. send success
+12. send failure
+13. pause
+14. resume
+15. task interruption
+16. replanning
+17. desktop executor simulation
+```
+
+Most important test:
+
+```text
+Executor fails
+→ planner receives failure
+→ task does not complete
+→ Groq does not claim success
 ```
 
 ---
 
-# 19. Migration order
+# Phase 20 — SQLite reliability
 
-This is the order I would actually implement:
+Only after orchestration stabilizes.
 
-### Stage A — New models
-
-```text
-Intent
-ActionPlan
-PlanStep
-TaskState
-AgentDecision
-ExecutionResult
-```
-
-Keep old code working.
-
-### Stage B — New Gemini planner
-
-Gemini produces structured plans.
-
-### Stage C — AgentController
-
-Implement:
+Then fix:
 
 ```text
-plan → execute → result → replan
+database lock
 ```
 
-with a fake executor first.
+with:
 
-### Stage D — Connect existing Executor
+* explicit SQLite connection closure
+* appropriate timeout
+* WAL if justified
+* correct shutdown ordering
+* a concurrency/lock regression test
 
-Use real actions.
-
-### Stage E — Connect Gmail
-
-Migrate email to the new workflow.
-
-### Stage F — Confirmation / modification
-
-Implement pause-at-confirmation and mid-task replanning.
-
-### Stage G — Groq integration
-
-Use Groq to communicate the agent's authoritative state.
-
-### Stage H — Migrate memory and other capabilities
-
-Move them onto the same controller.
-
-### Stage I — Remove old orchestration
-
-Delete:
-
-```text
-ConversationEngine task hacks
-email-specific continuation
-duplicate confirmation paths
-one-step planner
-redundant state logic
-```
-
-### Stage J — SQLite cleanup + full regression
-
-Then:
-
-```text
-pytest
-integration tests
-live Gmail test
-```
+Don't mix this into the architecture work.
 
 ---
 
-# The final target
+# Implementation order
 
-When this is finished, ADVI should behave like:
+This is the exact sequence I would use.
+
+| Stage | Work                                | Result                         |
+| ----- | ----------------------------------- | ------------------------------ |
+| 1     | Gemini structured-output layer      | Reliable Intent/Plan JSON      |
+| 2     | Clean `Task`/`Plan` model           | Single workflow state          |
+| 3     | Multi-step Gemini Planner           | Real plans                     |
+| 4     | One-step Executor loop              | Execute → result → planner     |
+| 5     | Plan feedback/replanning            | Adaptive agent                 |
+| 6     | Confirmation plan step              | Safe human boundary            |
+| 7     | Groq generation layer               | Natural communication          |
+| 8     | Gmail migration                     | Complete email workflow        |
+| 9     | Modification/resume/interruption    | Focus 14 completed properly    |
+| 10    | Information/conversation routing    | Non-task requests work cleanly |
+| 11    | Desktop executor interface          | David's future work plugs in   |
+| 12    | Remove old ConversationEngine hacks | Simpler architecture           |
+| 13    | Full workflow regression            | Confidence                     |
+| 14    | SQLite/session reliability          | Stable runtime                 |
+| 15    | Live end-to-end testing             | Real ADVI validation           |
+
+---
+
+# What we should NOT do
+
+This is just as important.
+
+We will **not**:
 
 ```text
-                 USER
-                   │
-                   ▼
-                GROQ
-           understand/talk
-                   │
-                   ▼
-               GEMINI
-          plan / reason / revise
-                   │
-                   ▼
-               PYTHON
-         execute exact action
-                   │
-                   ▼
-           ExecutionResult
-                   │
-                   └──────────────┐
-                                  ▼
-                               GEMINI
-                          decide next step
-                                  │
-                  ┌───────────────┼───────────────┐
-                  ▼               ▼               ▼
-               execute        ask user          finish
-                  │               │               │
-                  └───────────────┘               ▼
-                                              GROQ
-                                                │
-                                                ▼
-                                               USER
+❌ rewrite the whole project
+❌ create 10 new orchestration classes
+❌ hard-code every natural-language phrase
+❌ make Groq responsible for execution
+❌ make Python hard-code the plan
+❌ execute all planner steps blindly
+❌ make every turn call both LLMs
+❌ replace the existing Planner with a renamed duplicate
+❌ throw away the existing TaskManager
+❌ copy David's old project wholesale
 ```
+
+David's code gives us one particularly useful pattern: **structured intent + structured multi-action plan**. His old planner explicitly generates complete action sequences, which is exactly the part our current planner is missing. 
+
+But ADVI should go beyond that old implementation by making the plan **persistent, interruptible, re-plannable, and executable one step at a time**.
+
+---
+
+# The final mental model
+
+This is the model I want us to code against:
+
+```text
+                         USER
+                           │
+                           ▼
+                       INTENT
+                       Gemini
+                           │
+                           ▼
+                        PLAN
+                       Gemini
+                           │
+                    complete steps
+                           │
+                           ▼
+                    CURRENT STEP
+                           │
+                           ▼
+                       EXECUTOR
+                           │
+               ┌───────────┼───────────┐
+               ▼           ▼           ▼
+            Python       Groq       Desktop
+             Tool       Generate     Agent
+               │           │           │
+               └───────────┼───────────┘
+                           ▼
+                      RESULT / OBSERVATION
+                           │
+                           ▼
+                        GEMINI
+                           │
+                  ┌────────┼────────┐
+                  ▼        ▼        ▼
+               NEXT      MODIFY    USER
+               STEP       PLAN     INPUT
+                  │
+                  └───────────────►
+```
+
+And the core invariant is:
+
+> **Plan everything, execute one step, report the result, re-evaluate, then execute the next step.**
+
+That gives you the multi-step planner you wanted, the execution feedback loop you need for David's future desktop agent, the Gmail workflow you need now, and enough structure for Focus 14 without turning `conversation.py` into another 1,000-line control center.
+
 
 
 

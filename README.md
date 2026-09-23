@@ -1,3 +1,1436 @@
+Focus 0  → freeze baseline
+Focus 1  → clean repository/dependencies
+Focus 2  → isolate David
+Focus 3  → architectural constitution
+Focus 4  → new contracts
+Focus 5  → provider sessions/cache
+Focus 6  → single-agent loop
+Focus 7  → native tools
+Focus 8  → direct computer control
+Focus 9  → change observation
+Focus 10 → watchdog
+Focus 11 → browser hardening
+Focus 12 → verification
+Focus 13 → context minimization
+Focus 14 → short-term memory removal
+Focus 15 → long-term memory redesign
+Focus 16 → task-state redesign
+Focus 17 → security/prompt injection
+Focus 18 → provider handoff
+Focus 19 → logging
+Focus 20 → evaluation
+Focus 21 → delete old architecture
+Focus 22 → advanced features
+
+Yes. I would turn this into a **controlled rebuild**, not another round of patching.
+
+And I agree with your decision about David: **keep David intact and isolated**. Do not merge its brain into the new ADVI brain yet. It can remain our independent fallback/reference implementation. That gives us a safety net while we radically simplify the main architecture.
+
+The current repository has already accumulated 49 phases of incremental hardening, including reasoning/planning, verification, recovery, memory, task persistence, provider resilience, environment intelligence, and observability. The problem is that the result now contains too many overlapping abstractions. The project map itself identifies duplicate intent/planner/executor abstractions and the duplicated `fallback-old/` / `fallback/` stacks.
+
+# ADVI Rebuild Roadmap
+
+## Focus 0 — Freeze the current system
+
+**Goal:** Establish a known baseline before deleting anything.
+
+Do this first:
+
+```text
+git branch:
+    advi-before-rebuild
+
+archive:
+    current source
+    David source
+    runtime logs
+    .env.example
+```
+
+Record:
+
+```text
+Python version
+installed packages
+models
+environment variables
+current tests
+current executable path
+```
+
+Create 5 real acceptance scenarios:
+
+```text
+1. Open Notepad and type text.
+2. Open Chrome and navigate somewhere.
+3. Search a website and interact with it.
+4. Create/save a file.
+5. Recover cleanly when a capability is unavailable.
+```
+
+Also record:
+
+```text
+LLM calls
+latency
+tool calls
+failure type
+false-success incidents
+```
+
+**Do not refactor anything before this baseline exists.**
+
+---
+
+# Focus 1 — Clean the battlefield
+
+This is your requested first major implementation.
+
+**Goal:** Remove dead weight before designing the new system.
+
+### Delete/quarantine immediately
+
+```text
+build/
+__pycache__/
+.pytest_cache/
+stale egg-info artifacts
+old generated runtime artifacts
+temporary screenshots
+temporary audio
+old debug files
+```
+
+### Remove/verify dependencies
+
+The current direct dependency list contains several packages that are not actually imported by the current ADVI source:
+
+```text
+requests
+dnspython
+sounddevice
+soundfile
+pypdf
+python-docx
+```
+
+These should not remain core dependencies unless a real feature uses them.
+
+`tzdata` is different: the provider router explicitly accounts for Windows timezone database availability, so keep it for now.
+
+Current actual imports justify keeping things such as:
+
+```text
+groq
+google-genai
+google-auth*
+google-api*
+pydantic
+pywinauto
+pyautogui
+pytesseract
+Pillow
+websocket-client
+watchdog
+sentence-transformers
+numpy
+python-dotenv
+```
+
+### Separate dependency groups
+
+Instead of one giant install:
+
+```text
+advi-core
+advi-desktop
+advi-browser
+advi-gmail
+advi-memory
+advi-voice
+advi-dev
+```
+
+or Python extras:
+
+```text
+[desktop]
+[browser]
+[gmail]
+[memory]
+[voice]
+```
+
+That immediately prevents one missing GUI dependency from breaking unrelated functionality.
+
+---
+
+# Focus 2 — Freeze David and isolate it
+
+**Do NOT rewrite David.**
+
+Do this instead:
+
+```text
+ADVI/
+├── src/advi/              ← NEW main brain
+├── david/                  ← untouched David source
+├── david_runner/           ← tiny adapter
+└── tests/
+```
+
+Better still:
+
+```text
+Main ADVI process
+        │
+        │ fallback request
+        ▼
+David subprocess
+        │
+        ▼
+JSON result
+```
+
+So:
+
+```text
+ADVI crash
+≠
+David crash
+```
+
+and:
+
+```text
+David dependency problem
+≠
+ADVI dependency problem
+```
+
+David gets:
+
+```text
+David Brain
+David Tools
+David Executor
+David Perception
+David Browser
+```
+
+completely independently.
+
+`fallback-old/` should be archived, not active.
+
+**Decision:** David remains our independent emergency agent until the new ADVI proves itself.
+
+---
+
+# Focus 3 — Write the new architectural constitution
+
+Before coding, define the rule:
+
+> **LLM owns cognition. Local software owns reality.**
+
+That means:
+
+### LLM
+
+```text
+understand
+reason
+decide
+choose tool
+sequence actions
+adapt
+recover
+speak
+```
+
+### Python
+
+```text
+expose tools
+validate tool arguments
+enforce safety
+execute tools
+observe machine
+return evidence
+watch for runaway behavior
+persist state
+```
+
+Python does **not** decide:
+
+```text
+"this is an email intent"
+"this is a task_modify"
+"the user probably means..."
+```
+
+unless a safety boundary genuinely requires deterministic handling.
+
+---
+
+# Focus 4 — Create the five core runtime contracts
+
+Replace the current jungle of contracts with a few canonical objects.
+
+```text
+AgentSession
+ProviderSession
+ToolCall
+ToolResult
+TaskState
+```
+
+And inside `ToolResult`:
+
+```text
+execution
+observation
+verification
+error
+evidence
+```
+
+Example:
+
+```json
+{
+  "status": "success",
+  "observation": "Chrome opened YouTube",
+  "verification": "verified",
+  "evidence": {
+    "window": "Google Chrome",
+    "url": "https://youtube.com"
+  }
+}
+```
+
+This becomes the language spoken between:
+
+```text
+LLM ↔ ADVI runtime
+```
+
+Everything else should eventually disappear.
+
+---
+
+# Focus 5 — Replace prompt rebuilding with ProviderSession
+
+This directly addresses your system-prompt concern.
+
+Create:
+
+```text
+ProviderSession
+```
+
+with:
+
+```text
+provider
+model
+session_id
+prompt_version
+tool_schema_version
+created_at
+expires_at
+```
+
+The provider session owns:
+
+```text
+system instructions
+provider-native conversation state
+tool definitions
+cache state
+```
+
+Then:
+
+```text
+Turn 1
+→ initialize Gemini session
+
+Turn 2
+→ reuse Gemini session
+
+Turn 3
+→ reuse Gemini session
+```
+
+not:
+
+```text
+Turn 1
+→ construct giant prompt
+
+Turn 2
+→ reconstruct giant prompt
+
+Turn 3
+→ reconstruct giant prompt
+```
+
+Use provider-native state/caching where supported.
+
+The Agent-E paper also specifically identifies caching as an important efficiency mechanism and warns that naïve caching doesn't work well for rapidly changing environmental context. 
+
+### Important distinction
+
+Cache:
+
+```text
+stable system instructions
+stable tool definitions
+stable identity
+```
+
+Do **not** blindly cache:
+
+```text
+current screenshot
+current webpage
+current filesystem state
+```
+
+Those are dynamic.
+
+---
+
+# Focus 6 — Kill the separate reasoning/planning/replanning chain
+
+This is the largest architectural surgery.
+
+Current:
+
+```text
+ReasoningEngine
+ ↓
+PlannerEngine
+ ↓
+ExecutionEngine
+ ↓
+ReplanningEngine
+```
+
+New:
+
+```text
+LLM
+ ↓
+tool call
+ ↓
+tool result
+ ↓
+LLM
+ ↓
+tool call
+...
+```
+
+No separate:
+
+```text
+intent LLM
+planner LLM
+recovery LLM
+response LLM
+```
+
+One active model session.
+
+For:
+
+> "Open Chrome, search YouTube for Baby Shark and play it."
+
+the LLM decides:
+
+```text
+computer.open(...)
+```
+
+then sees result.
+
+Then:
+
+```text
+browser.navigate(...)
+```
+
+then sees result.
+
+Then:
+
+```text
+browser.search(...)
+```
+
+and so on.
+
+The agent plans **implicitly through the loop**, using the current state.
+
+---
+
+# Focus 7 — Make tools the fundamental primitive skills
+
+This is where Agent-E is useful.
+
+The paper's browser agent exposes a small set of primitive skills and lets the LLM compose them.  
+
+ADVI should do the same.
+
+Start with:
+
+```text
+computer
+browser
+filesystem
+email
+memory
+```
+
+Don't make every microscopic action a separate conceptual subsystem.
+
+The model sees tools.
+
+It chooses tools.
+
+That's it.
+
+---
+
+# Focus 8 — Native tool calling + one canonical schema
+
+Kill:
+
+```text
+"Please output JSON"
+_extract_json()
+manual parsing
+multiple action schemas
+legacy action schemas
+fallback action schemas
+```
+
+Use native function/tool calling wherever the provider supports it.
+
+One tool definition:
+
+```text
+computer.click(...)
+```
+
+One schema.
+
+One validator.
+
+One executor.
+
+No translation chain:
+
+```text
+LLM JSON
+→ Intent
+→ TaskStep
+→ ActionStep
+→ ActionContract
+→ ExecutorAction
+```
+
+That chain is precisely the kind of complexity we need to remove.
+
+---
+
+# Focus 9 — Give the model direct computer control
+
+This is where your preferred architecture comes in.
+
+The new loop becomes:
+
+```text
+LLM
+ ↓
+computer.click()
+ ↓
+real PC
+ ↓
+observation
+ ↓
+LLM
+```
+
+For computer perception use:
+
+```text
+1. UI Automation
+2. Accessibility information
+3. Application-specific structure
+4. Screenshot/OCR
+```
+
+The model gets the best available observation.
+
+Agent-E's broader insight here is important: no single environmental representation is ideal for every task, so observation should be adaptive and denoised. 
+
+---
+
+# Focus 10 — Implement Change Observation
+
+This should become a **core ADVI principle**.
+
+Every significant action returns:
+
+```text
+What did I do?
+What changed?
+What evidence proves it?
+```
+
+Example:
+
+```text
+click("File")
+
+→ executed
+
+→ "File menu appeared"
+
+→ window/UI evidence
+```
+
+Or:
+
+```text
+type("hello")
+
+→ executed
+
+→ text field now contains "hello"
+
+→ actual UI evidence
+```
+
+This idea comes directly from Agent-E's change-observation mechanism, which reports consequences of actions back to the model so the next decision is grounded in the new environment state. 
+
+This is much more valuable than your current elaborate replanning machinery.
+
+---
+
+# Focus 11 — Build a tiny ExecutionWatchdog
+
+Separate this from EnvironmentWatchtower.
+
+`EnvironmentWatchtower` watches the environment.
+
+`ExecutionWatchdog` watches **ADVI itself**.
+
+It needs only:
+
+```text
+task deadline
+tool timeout
+maximum tool calls
+maximum consecutive failures
+same-call repetition limit
+same-state repetition limit
+user cancellation
+provider timeout
+```
+
+Example:
+
+```text
+navigate(X)
+→ permission denied
+
+navigate(X)
+→ permission denied
+
+WATCHDOG:
+STOP
+```
+
+No LLM prompt is trusted to enforce this.
+
+Known deterministic bad states should be hard-blocked.
+
+---
+
+# Focus 12 — Rebuild verification around evidence
+
+Keep this part of the old architecture.
+
+Do **not** throw verification away.
+
+But make it simpler.
+
+The principle becomes:
+
+```text
+tool execution
+    ≠
+task completion
+```
+
+and:
+
+```text
+LLM statement
+    ≠
+truth
+```
+
+Instead:
+
+```text
+Tool
+ ↓
+Evidence
+ ↓
+Verification
+ ↓
+LLM
+```
+
+Python verifies things like:
+
+```text
+file exists
+window exists
+window focused
+URL matches
+message ID exists
+text actually present
+```
+
+Then the final LLM sees the evidence and speaks naturally.
+
+So:
+
+```text
+Python does not TALK.
+Python proves.
+
+LLM does not PROVE.
+LLM explains.
+```
+
+That's the boundary I want.
+
+---
+
+# Focus 13 — Completely fix the browser capability
+
+Do this as its own focus because it currently has genuine infrastructure problems.
+
+Your runtime logs show:
+
+```text
+Chrome CDP list_tabs
+→ WinError 10061
+```
+
+and later the actual WebSocket path encounters Chrome's origin rejection.  
+
+Fix:
+
+### Startup
+
+```text
+launch Chrome
+ ↓
+wait for port
+ ↓
+verify /json/version
+ ↓
+verify WebSocket connectivity
+ ↓
+only then advertise browser capability
+```
+
+No more:
+
+```text
+probe failed
+→ degraded mode
+→ maybe browser is actually usable
+```
+
+### CDP lifecycle
+
+Use one browser session per task:
+
+```text
+connect
+ ↓
+identify owned tab
+ ↓
+reuse connection
+ ↓
+multiple operations
+ ↓
+close
+```
+
+Don't repeatedly rediscover/connect for every action.
+
+### Error classes
+
+Differentiate:
+
+```text
+chrome_not_running
+chrome_starting
+connection_refused
+origin_rejected
+authentication_required
+browser_crashed
+target_closed
+navigation_failed
+```
+
+Never collapse everything into:
+
+```text
+[]
+```
+
+---
+
+# Focus 14 — Context minimization / Observation Router
+
+This addresses your payload problem better than merely making the prompt smaller.
+
+The model should receive only what it needs.
+
+For example:
+
+```text
+simple conversation
+→ user message + session state
+
+desktop click
+→ relevant UI state
+
+browser interaction
+→ relevant DOM/accessibility state
+
+visual task
+→ screenshot
+
+memory question
+→ memory tool result
+
+filesystem task
+→ filesystem result
+```
+
+Not:
+
+```text
+entire environment
++
+entire memory
++
+entire task database
++
+all capabilities
++
+all schemas
++
+whole conversation
++
+all research
+```
+
+The Agent-E paper explicitly calls out environmental denoising as a major requirement because raw DOM/context can become enormous.  
+
+---
+
+# Focus 15 — Remove Short-Term Memory from the model payload
+
+Here I would implement your idea, with one modification.
+
+Keep:
+
+```text
+Local conversation transcript
+```
+
+for:
+
+```text
+audit
+recovery
+provider handoff
+debugging
+session persistence
+```
+
+But don't automatically inject it into every model request.
+
+Normal path:
+
+```text
+ProviderSession
+→ provider remembers current conversation when supported
+```
+
+Fallback path:
+
+```text
+provider switch
+→ compact handoff state
+```
+
+That handoff should contain:
+
+```text
+current objective
+important unresolved information
+recent tool calls
+recent tool results
+current environment state
+active confirmation
+```
+
+Not the entire lifetime conversation.
+
+This is a major reduction in payload complexity.
+
+---
+
+# Focus 16 — Rebuild long-term memory as a tool
+
+Do not delete the existing memory database yet.
+
+First change **how the brain uses it**.
+
+Instead of:
+
+```text
+every turn
+→ search memory
+→ inject memories
+→ LLM decides what they mean
+```
+
+make:
+
+```text
+LLM:
+"memory.search('what is my preferred browser?')"
+```
+
+Then Python returns evidence.
+
+For writing:
+
+```text
+LLM:
+memory.remember(...)
+```
+
+For deletion:
+
+```text
+LLM:
+memory.forget(...)
+```
+
+This means memory becomes:
+
+```text
+optional
+on-demand
+evidence-based
+```
+
+rather than permanent prompt baggage.
+
+Then we simplify the 1,297-line long-term memory implementation.
+
+I would first reduce it to:
+
+```text
+SQLite
++
+FTS
++
+simple metadata
+```
+
+and only retain embeddings if real usage demonstrates that lexical retrieval is insufficient.
+
+Your current retriever lazily loads the embedding model, which is good, but it still maintains a relatively heavy hybrid retrieval subsystem for a feature that can be invoked only when necessary.
+
+---
+
+# Focus 17 — Simplify task persistence
+
+You still need task persistence.
+
+But the new task model should be tiny:
+
+```text
+TaskState
+
+id
+goal
+status
+created_at
+updated_at
+pending_confirmation
+last_tool_call
+last_tool_result
+handoff_state
+```
+
+Crucially:
+
+### Goal is immutable.
+
+Never allow this:
+
+```text
+original goal
++
+random user text
++
+replanning text
++
+tool arguments
+```
+
+to become one giant string.
+
+Use:
+
+```text
+goal
+user_updates[]
+tool_history[]
+current_state
+```
+
+separately.
+
+This directly prevents the corruption we discovered in the Baby Shark task.
+
+---
+
+# Focus 18 — Safety and prompt-injection boundary
+
+This stays deterministic.
+
+The model can decide:
+
+```text
+"I want to delete this file."
+```
+
+Python decides:
+
+```text
+This operation requires confirmation.
+```
+
+And tool results containing:
+
+```text
+webpage text
+file contents
+email contents
+```
+
+must be treated as **untrusted data**, not instructions.
+
+So internally:
+
+```text
+INSTRUCTIONS
+-----------
+SYSTEM
+USER
+
+DATA
+-----------
+WEB
+FILES
+EMAIL
+MEMORY
+SCREEN
+```
+
+This matters enormously for an autonomous browser/desktop agent.
+
+---
+
+# Focus 19 — Provider failover becomes session handoff
+
+Current architecture:
+
+```text
+Gemini-1 fails
+ ↓
+Gemini-2
+ ↓
+send giant payload again
+```
+
+New architecture:
+
+```text
+Provider A session
+      ↓
+failure
+      ↓
+HandoffState
+      ↓
+Provider B session
+```
+
+HandoffState:
+
+```text
+goal
+current task
+recent tool events
+last observation
+important memory references
+confirmation state
+```
+
+Then Provider B continues.
+
+The model itself remains responsible for reasoning.
+
+---
+
+# Focus 20 — Logging becomes useful instead of enormous
+
+Current trace logging is extremely verbose—the uploaded runtime log records full reasoning prompts, capability descriptions, schemas, and raw provider payloads.  
+
+Production trace should be:
+
+```text
+TURN
+provider
+model
+latency
+tool
+arguments hash
+tool result
+verification
+watchdog status
+final status
+```
+
+Raw prompt dumps should be:
+
+```text
+DEBUG ONLY
+```
+
+with redaction.
+
+This will make debugging dramatically easier.
+
+---
+
+# Focus 21 — Build a real agent evaluation suite
+
+This is where we stop guessing.
+
+Measure:
+
+```text
+task success
+false success
+self-aware failure
+task latency
+LLM calls
+tool calls
+provider switches
+recovery attempts
+watchdog stops
+```
+
+Agent-E itself argues that success rate alone hides important agent behavior and explicitly tracks error awareness, completion time, and LLM-call count.  
+
+For ADVI, I'd add:
+
+```text
+false-action rate
+false-success rate
+repeated-action rate
+provider-handoff success
+```
+
+Those are much more useful than "pytest green."
+
+---
+
+# Focus 22 — Only after the new runtime works: delete the old brain
+
+This is when we finally remove:
+
+```text
+ReasoningEngine
+PlannerEngine
+ReplanningEngine
+
+legacy IntentDetector
+legacy IntentHandler
+legacy ConversationEngine
+
+TaskCoordinator
+TaskManager
+
+old ActionPlan contracts
+intent_bridge
+followup_semantics
+old response policy
+```
+
+Not before.
+
+During migration:
+
+```text
+OLD SYSTEM
+        │
+        └── archived
+
+NEW SYSTEM
+        │
+        ├── proven capability implementations
+        └── new agent loop
+```
+
+Then delete the old pieces once the acceptance tests pass.
+
+---
+
+# Focus 23 — Reconnect advanced features later
+
+Only after the core is stable:
+
+```text
+research
+memory intelligence
+multi-step workflows
+self-improvement
+workflow caching
+voice input
+advanced environment intelligence
+```
+
+Do not let these features back into the core loop as giant context builders.
+
+They should become tools/services.
+
+---
+
+# What survives from the current architecture
+
+This is important.
+
+We are **not throwing ADVI away**.
+
+### Keep
+
+```text
+Desktop execution technology
+Browser execution technology
+Filesystem capability
+Gmail
+SQLite memory
+TTS
+Environment Watchtower
+Capability availability
+Verification ideas
+Confirmation
+Task persistence
+Execution evidence
+Telemetry
+David
+```
+
+### Rebuild
+
+```text
+Reasoning
+Planning
+Recovery
+Conversation orchestration
+Context assembly
+Provider sessions
+Tool contracts
+Memory consumption
+Task model
+```
+
+### Delete eventually
+
+```text
+duplicate brains
+duplicate planners
+legacy semantic classifiers
+duplicate action contracts
+manual JSON parsing
+duplicate fallback brains
+giant prompt builders
+```
+
+---
+
+# The new ADVI in one picture
+
+This is the architecture I would now lock onto:
+
+```text
+                         USER
+                           │
+                           ▼
+                 ┌──────────────────┐
+                 │   AgentSession   │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │       LLM        │
+                 │                 │
+                 │ understand      │
+                 │ reason          │
+                 │ plan implicitly │
+                 │ choose tools    │
+                 │ recover         │
+                 │ speak           │
+                 └────────┬─────────┘
+                          │
+                       tool call
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │    Tool Guard    │
+                 │ validation       │
+                 │ permission       │
+                 │ confirmation     │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │   Tool Runner    │
+                 └────────┬─────────┘
+                          │
+        ┌─────────────────┼─────────────────┐
+        ▼                 ▼                 ▼
+    COMPUTER           BROWSER           FILESYSTEM
+        │                 │
+     UIA/OCR          DOM/CDP
+        │                 │
+        └─────────────────┼─────────────────┘
+                          ▼
+                    OBSERVATION
+                          │
+                    VERIFICATION
+                          │
+                    WATCHDOG
+                          │
+                          ▼
+                    TOOL RESULT
+                          │
+                          ▼
+                         LLM
+                    ↙           ↘
+              next tool      final response
+```
+
+And separately:
+
+```text
+                      MEMORY
+                         ▲
+                         │
+                    tool calls
+
+                      DAVID
+                         ▲
+                         │
+                  emergency fallback
+                         │
+                  isolated process
+```
+
+---
+
+# The order matters
+
+Do **not** implement these in parallel.
+
+The sequence should be:
+
+```text
+Focus 0  → freeze baseline
+Focus 1  → clean repository/dependencies
+Focus 2  → isolate David
+Focus 3  → architectural constitution
+Focus 4  → new contracts
+Focus 5  → provider sessions/cache
+Focus 6  → single-agent loop
+Focus 7  → native tools
+Focus 8  → direct computer control
+Focus 9  → change observation
+Focus 10 → watchdog
+Focus 11 → browser hardening
+Focus 12 → verification
+Focus 13 → context minimization
+Focus 14 → short-term memory removal
+Focus 15 → long-term memory redesign
+Focus 16 → task-state redesign
+Focus 17 → security/prompt injection
+Focus 18 → provider handoff
+Focus 19 → logging
+Focus 20 → evaluation
+Focus 21 → delete old architecture
+Focus 22 → advanced features
+```
+
+## One correction to our previous thinking
+
+I **would not completely eliminate every hierarchical concept forever**.
+
+Agent-E shows that hierarchy can genuinely help when tasks are complex, and it explicitly describes planner/navigation separation as useful for complex workflows. But the same paper warns that hierarchy becomes over-complicated for simple tasks.  
+
+So ADVI's default should be:
+
+```text
+ONE LLM AGENT
+```
+
+and later, for genuinely large tasks:
+
+```text
+ONE LLM AGENT
+    ↓
+optional specialist sub-agent
+```
+
+—not five permanent agents.
+
+That gives us a sane engineering principle:
+
+> **Start with one brain. Add another brain only when measured behavior proves one brain cannot handle a specific class of work.**
+
+That is the rebuild I would follow. It keeps David safe, preserves the good execution work you've already built, and removes the machinery that is currently making the LLM harder to use rather than more capable.
+
+
+
 ### Shadow — Sequential Focus Areas
 
 1. **Project Foundation & Runtime Setup**
